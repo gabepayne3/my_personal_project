@@ -37,7 +37,7 @@ describe("convertTimestampToDate", () => {
     expect(result).toEqual(expected);
   });
 });
-describe.only('referenceObj',()=>{
+describe('referenceObject',()=>{
   test('returns empty object when an empty array is passed',()=>{
     const input = []
     const result = referenceObject(input)
