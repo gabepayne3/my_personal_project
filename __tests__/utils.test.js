@@ -1,5 +1,5 @@
 const {
-  convertTimestampToDate
+  convertTimestampToDate, referenceObject
 } = require("../db/seeds/utils");
 
 describe("convertTimestampToDate", () => {
@@ -37,4 +37,54 @@ describe("convertTimestampToDate", () => {
     expect(result).toEqual(expected);
   });
 });
+describe.only('referenceObj',()=>{
+  test('returns empty object when an empty array is passed',()=>{
+    const input = []
+    const result = referenceObject(input)
+    expect(result).toEqual({})
+  })
+  test('returns an object with article title as key and article id as the value when passed an article with one object',()=>{
+    const input = [{
+      article_id: 1,
+      title: 'Living in the shadow of a great man',
+      topic: 'mitch',
+      author: 'butter_bridge',
+      body: 'I find this existence challenging',
+      created_at: '2020-07-09T20:11:00.000Z',
+      votes: 100,
+      article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700'
+    }]
+    const result = referenceObject(input)
+    expect(result).toEqual({
+      'Living in the shadow of a great man' : 1
+    })
+  })
+  test('returns an object with the article titles as the keys and the article ids as the values when passed an array containing multiple objects',()=>{ 
+    const input = [{
+      article_id: 1,
+      title: 'Living in the shadow of a great man',
+      topic: 'mitch',
+      author: 'butter_bridge',
+      body: 'I find this existence challenging',
+      created_at: '2020-07-09T20:11:00.000Z',
+      votes: 100,
+      article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700'
+    } , {
+      article_id: 3,
+      title: 'Eight pug gifs that remind me of mitch',
+      topic: 'mitch',
+      author: 'icellusedkars',
+      body: 'some gifs',
+      created_at: '2020-11-03T09:12:00.000Z',
+      votes: 0,
+      article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700'
+    }]
+    const result = referenceObject(input)
+    expect(result).toEqual({
+      'Living in the shadow of a great man' : 1,
+      'Eight pug gifs that remind me of mitch' : 3
+    })
+  })
+})
+
 
