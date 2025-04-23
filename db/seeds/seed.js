@@ -99,6 +99,7 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
         convCommentsStamp.created_at,
       ]
    })
+   console.log(formattedComments)
    const insertIntoCommentsQuery = format(
     `INSERT INTO comments (article_id, body, votes, author, created_at) VALUES %L`,
     formattedComments
