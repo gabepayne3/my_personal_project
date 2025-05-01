@@ -45,4 +45,31 @@ test("200: responds with an an array of topic objects", ()=>{
 })
 
 })
+describe("GET /api-articles/:article_id",()=>{
+  test("200 : responds with a single object in treasure", () => {
+    return request(app)
+      .get("/api/articles/1")
+      .expect(200)
+      .then((response) => {
+        const articles = response.body.articles;
+        expect(articles.article_id).toBe(1);
+      });
+  });
+  test("400 : responds with error of bad request/ non-exist id", () => {
+    return request(app)
+      .get("/api/articles/abc")
+      .expect(400)
+      .then((response) => {
+        expect(response.body.msg).toBe("Bad Request");
+      });
+  });
+  test("404 : responds with error of invalid route/ out of the range", () => {
+    return request(app)
+      .get("/api/articles/999999")
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe("404 Not Found");
+      });
+  });
+})
 
