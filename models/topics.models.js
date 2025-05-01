@@ -9,4 +9,5 @@ const selectTopics = () => {
       return result.rows;
     });
 };
+
 module.exports = {selectTopics}
