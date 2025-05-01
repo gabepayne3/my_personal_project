@@ -46,16 +46,16 @@ test("200: responds with an an array of topic objects", ()=>{
 
 })
 describe("GET /api-articles/:article_id",()=>{
-  test("200 : responds with a single object in treasure", () => {
+  test("200 : responds with a single object in article", () => {
     return request(app)
       .get("/api/articles/1")
       .expect(200)
       .then((response) => {
-        const articles = response.body.articles;
-        expect(articles.article_id).toBe(1);
+        const article = response.body.article;
+        expect(article.article_id).toBe(1);
       });
   });
-  test("400 : responds with error of bad request/ non-exist id", () => {
+  test("400 : responds with error of bad request/ invalid id", () => {
     return request(app)
       .get("/api/articles/abc")
       .expect(400)
@@ -63,7 +63,7 @@ describe("GET /api-articles/:article_id",()=>{
         expect(response.body.msg).toBe("Bad Request");
       });
   });
-  test("404 : responds with error of invalid route/ out of the range", () => {
+  test("404 : responds with error of valid route/ but non existent article", () => {
     return request(app)
       .get("/api/articles/999999")
       .expect(404)
@@ -71,5 +71,58 @@ describe("GET /api-articles/:article_id",()=>{
         expect(response.body.msg).toBe("404 Not Found");
       });
   });
+})
+describe("GET /api/articles with comment_count key and value",()=>{
+  test("200: responds with array of article objects, each of which should have articles properties and comment count added",()=>{
+    return request(app)
+    .get("/api/articles")
+    .expect(200)
+    .then((response)=> { 
+      console.log(`<<<<<<<<<<<${response}`)
+      const articles = response.body.articles;
+      console.log(articles)
+      expect(Array.isArray(articles)).toBe(true);
+      expect(articles.length).toBeGreaterThan(0);
+      articles.forEach((article) => {
+        
+
+        expect(article).toEqual(
+          expect.objectContaining({
+            article_id: expect.any(Number),
+            title: expect.any(String),
+            topic: expect.any(String),
+            author: expect.any(String),
+            created_at: expect.any(String),
+            votes: expect.any(Number),
+            article_img_url: expect.any(String),
+            comment_count: expect.any(Number)
+          })
+        );
+      });
+    })
+  })
+  test("200: sort by dates",()=>{
+    return request(app)
+    .get("/api/articles")
+    .expect(200)
+    .then((response)=>{
+      const article = response.body.articles
+      expect(article).toBeSortedBy("created_at", {descending: true})
+    })
+  })
+  test('200: articles with no comments still include comment_count as 0', () => {
+    return db.query('DELETE FROM comments;')
+      .then(() => {
+        return request(app)
+          .get('/api/articles')
+          .expect(200)
+          .then((res) => {
+            res.body.articles.forEach((article) => {
+              expect(article.comment_count).toBe(0);
+            });
+          });
+      });
+  })
+  
 })
 
