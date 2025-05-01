@@ -1,8 +1,25 @@
 const db = require("./db/connection.js")
 const express = require("express")
 const app = express()
-const getApi = require("./controllers/api.controllers")
+const {getApi, getTopics} = require("./controllers/topics.controllers.js")
+
 app.use(express.json());
+
 app.get("/api", getApi)
 
+app.get("/api/topics", getTopics)
+
+app.use((err, req, res, next) => {
+
+    if (err.code === "22P02") {
+
+      res.status(400).send({ msg: "Bad Request" });
+    } else if (err.status && err.msg) {
+
+      res.status(err.status).send({ msg: err.msg });
+    } else {
+
+      res.status(500).send({ msg: "Internal Server Error" });
+    }
+  });
 module.exports = app

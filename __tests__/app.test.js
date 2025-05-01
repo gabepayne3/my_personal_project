@@ -27,4 +27,22 @@ describe("GET /api", () => {
       });
   });
 });
+describe("GET /api-topics",() =>{
+test("200: responds with an an array of topic objects", ()=>{
+  return request(app)
+  .get("/api/topics")
+  .expect(200).then((response) =>{
+    const topic = response.body.topics
+    topic.forEach((topic)=>{
+      expect(topic).toEqual(expect.objectContaining(
+        {
+          slug: expect.any(String),
+          description: expect.any(String)
+        }
+      ))
+    })
+  })
+})
+
+})
 
