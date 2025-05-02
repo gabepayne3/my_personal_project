@@ -24,7 +24,7 @@ const getArticlesId = (req, res, next) => {
   const patchArticleById = (req, res, next) => {
     const { article_id } = req.params;
     const { inc_votes } = req.body;
-    if (inc_votes === undefined || typeof inc_votes !== 'number') {
+    if (inc_votes === undefined) {
         return next({ status: 400, msg: 'Bad Request' });
     }
     
