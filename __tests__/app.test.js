@@ -152,7 +152,7 @@ describe("GET /api/articles/:article_id/comments", ()=>{
     .get('/api/articles/2/comments')
     .expect(200)
     .then(({body: {comments}}) => {
-      console.log(comments)
+
       expect(comments).toEqual([]);
     });
 });
@@ -252,7 +252,6 @@ describe('PATCH /api/articles/:article_id', () => {
           .send({ inc_votes: 1 })
           .expect(200)
           .then((response) => {
-            console.log(response.body.article)
               expect(response.body.article).toHaveProperty('votes', 101);
           });
   });
@@ -293,4 +292,32 @@ describe('PATCH /api/articles/:article_id', () => {
           })
   });
 });
+describe('DELETE /api/comments/:comment_id', () => {
+  test('204: deletes the comment and responds with no content', () => {
+    return request(app)
+      .delete('/api/comments/1')
+      .expect(204)
+      .then((res) => {
 
+        expect(res.body).toEqual({});
+      });
+  });
+
+  test('404: responds with not found for non-existent comment_id', () => {
+    return request(app)
+      .delete('/api/comments/009766')
+      .expect(404)
+      .then((res) => {
+        expect(res.body.msg).toBe('404 not found');
+      });
+  });
+
+  test('400: responds with bad request for invalid comment_id', () => {
+    return request(app)
+      .delete('/api/comments/abc')
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).toBe('Bad Request');
+      });
+  });
+});
