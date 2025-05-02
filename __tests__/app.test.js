@@ -78,9 +78,9 @@ describe("GET /api/articles with comment_count key and value",()=>{
     .get("/api/articles")
     .expect(200)
     .then((response)=> { 
-      console.log(`<<<<<<<<<<<${response}`)
+
       const articles = response.body.articles;
-      console.log(articles)
+
       expect(Array.isArray(articles)).toBe(true);
       expect(articles.length).toBeGreaterThan(0);
       articles.forEach((article) => {
@@ -124,5 +124,55 @@ describe("GET /api/articles with comment_count key and value",()=>{
       });
   })
   
+})
+describe("GET /api/articles/:article_id/comments", ()=>{
+  test("200: responds with an array of comments for the given article_id ",()=>{
+    return request(app)
+    .get("/api/articles/1/comments")
+    .expect(200)
+    .then(({body: {comments}})=>{
+
+      expect(comments.length).toBe(11)
+      comments.forEach((comment)=>{
+
+        expect(comment).toMatchObject({
+            comment_id: expect.any(Number),
+            votes: expect.any(Number),
+            created_at: expect.any(String),
+            author: expect.any(String),
+            body: expect.any(String),
+            article_id: expect.any(Number)
+        })
+      })
+    })
+    
+ })
+//  test('200: responds with an empty array if article exists but has no comments', () => {
+//   return request(app)
+//     .get('/api/articles/12/comments')
+//     .expect(200)
+//     .then(({body: {comments}}) => {
+//       console.log(comments)
+//       expect(comments).toEqual([]);
+//     });
+// });
+
+test('400: responds with bad request if article_id is invalid', () => {
+  return request(app)
+    .get('/api/articles/not-a-number/comments')
+    .expect(400)
+    .then((res) => {
+      expect(res.body.msg).toBe('Bad Request');
+    });
+});
+
+test('404: responds with not found if article does not exist', () => {
+  return request(app)
+    .get('/api/articles/9999/comments') 
+    .expect(404)
+    .then((res) => {
+      expect(res.body.msg).toBe('404 Not Found');
+    });
+});
 })
 

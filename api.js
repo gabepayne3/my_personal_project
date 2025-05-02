@@ -1,13 +1,17 @@
 const db = require("./db/connection.js")
 const express = require("express")
 const app = express()
-
+// const {handlePSQLErrors, handleServerErrors, handleCustomErrors} = require("./errors.js")
 const {getApi, getTopics} = require("./controllers/topics.controllers.js")
 
 const {getArticlesId, getArticles} = require("./controllers/articles.controller.js")
 
-app.use(express.json());
+const {getCommentsByArticleId} = require("./controllers/comments.controllers.js")
 
+// app.use(handlePSQLErrors)
+// app.use(handleServerErrors)
+// app.use(handleCustomErrors)
+//tried moving the error handling into a seperate file but ive messed up somewhere so just going to continue and come back to it 
 app.get("/api", getApi)
 
 app.get("/api/topics", getTopics)
@@ -15,6 +19,8 @@ app.get("/api/topics", getTopics)
 app.get("/api/articles/:article_id", getArticlesId);
 
 app.get("/api/articles", getArticles)
+
+app.get("/api/articles/:article_id/comments", getCommentsByArticleId)
 
 app.use((err, req, res, next) => {
 
