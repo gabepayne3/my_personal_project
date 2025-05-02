@@ -15,9 +15,7 @@ const selectCommentsByArticleId = (article_id)=>{
 } 
 
 const addCommentByArticleId = (article_id, username, body) => {
-    if (typeof article_id !== 'number') {
-      return Promise.reject({ status: 400, msg: 'Bad Request' });
-    } else return db
+   return db
       .query('SELECT * FROM articles WHERE article_id = $1', [article_id])
       .then((articleResult) => {
         if (articleResult.rows.length === 0) {
