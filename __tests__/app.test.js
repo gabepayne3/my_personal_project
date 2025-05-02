@@ -187,7 +187,6 @@ describe('POST /api/articles/:article_id/comments', () => {
       .send(newComment)
       .expect(201)
       .then((response) => {
-        console.log(response);
         
         expect(response.body.comment).toMatchObject({
           article_id: 1,
@@ -246,5 +245,52 @@ describe('POST /api/articles/:article_id/comments', () => {
       });
   });
 });
-
+describe('PATCH /api/articles/:article_id', () => {
+  test('200: responds with the updated article when passed a valid inc_votes', () => {
+      return request(app)
+          .patch('/api/articles/1')
+          .send({ inc_votes: 1 })
+          .expect(200)
+          .then((response) => {
+            console.log(response.body.article)
+              expect(response.body.article).toHaveProperty('votes', 101);
+          });
+  });
+  test('400: responds with error for invalid inc_votes type', () => {
+      return request(app)
+          .patch('/api/articles/1')
+          .send({ inc_votes: 'treacle converse' })
+          .expect(400)
+          .then((res) => {
+              expect(res.body.msg).toBe('Bad Request');
+          });
+  });
+  test('400: responds with error when inc_votes is missing', () => {
+      return request(app)
+          .patch('/api/articles/1')
+          .send({})
+          .expect(400)
+          .then((response) => {
+              expect(response.body.msg).toBe('Bad Request');
+          });
+  });
+  test('404: responds with error for non-existent article', () => {
+      return request(app)
+          .patch('/api/articles/9999')
+          .send({ inc_votes: 10 })
+          .expect(404)
+          .then((response) => {
+              expect(response.body.msg).toBe('404 not found');
+          });
+  });
+  test('400: responds with error for invalid article_id', () => {
+      return request(app)
+          .patch('/api/articles/not-a-number')
+          .send({ inc_votes: 5 })
+          .expect(400)
+          .then((res) => {
+            expect(res.body.msg).toBe('Bad Request');
+          })
+  });
+});
 
