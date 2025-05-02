@@ -1,4 +1,4 @@
-const {selectCommentsByArticleId} = require("../models/comments.models")
+const {selectCommentsByArticleId, addCommentByArticleId} = require("../models/comments.models")
 const {selectArticlesById} = require("../models/articles.models")
 
 const getCommentsByArticleId = (req, res, next) => {
@@ -10,10 +10,27 @@ const getCommentsByArticleId = (req, res, next) => {
  }).catch(next)
 }
 
+const postCommentByArticleId = (req, res, next) => {
+    const { article_id } = req.params;
+    const { username, body } = req.body;
+  
+    if (!username || !body) {
+      return res.status(400).send({ msg: 'Bad Request' });
+    }
+  
+    const articleIdAsNumber = Number(article_id);
+  
+    addCommentByArticleId(articleIdAsNumber, username, body)
+      .then((comment) => {
+        res.status(201).send({ comment });
+      })
+      .catch((err) => {
+        next(err); 
+      });
+  };
 
 
 
 
 
-
-module.exports = {getCommentsByArticleId}
+module.exports = {getCommentsByArticleId, postCommentByArticleId}
