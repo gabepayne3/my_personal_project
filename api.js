@@ -3,11 +3,12 @@ const express = require("express")
 const app = express()
 // const {handlePSQLErrors, handleServerErrors, handleCustomErrors} = require("./errors.js")
 const {getApi, getTopics} = require("./controllers/topics.controllers.js")
-
+const {postCommentByArticleId} = require("./controllers/comments.controllers.js")
 const {getArticlesId, getArticles} = require("./controllers/articles.controller.js")
 
 const {getCommentsByArticleId} = require("./controllers/comments.controllers.js")
 
+app.use(express.json());
 // app.use(handlePSQLErrors)
 // app.use(handleServerErrors)
 // app.use(handleCustomErrors)
@@ -21,6 +22,8 @@ app.get("/api/articles/:article_id", getArticlesId);
 app.get("/api/articles", getArticles)
 
 app.get("/api/articles/:article_id/comments", getCommentsByArticleId)
+
+app.post("/api/articles/:article_id/comments", postCommentByArticleId)
 
 app.use((err, req, res, next) => {
 

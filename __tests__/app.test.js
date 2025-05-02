@@ -147,15 +147,15 @@ describe("GET /api/articles/:article_id/comments", ()=>{
     })
     
  })
-//  test('200: responds with an empty array if article exists but has no comments', () => {
-//   return request(app)
-//     .get('/api/articles/12/comments')
-//     .expect(200)
-//     .then(({body: {comments}}) => {
-//       console.log(comments)
-//       expect(comments).toEqual([]);
-//     });
-// });
+ test('200: responds with an empty array if article exists but has no comments', () => {
+  return request(app)
+    .get('/api/articles/2/comments')
+    .expect(200)
+    .then(({body: {comments}}) => {
+      console.log(comments)
+      expect(comments).toEqual([]);
+    });
+});
 
 test('400: responds with bad request if article_id is invalid', () => {
   return request(app)
@@ -175,4 +175,76 @@ test('404: responds with not found if article does not exist', () => {
     });
 });
 })
+describe('POST /api/articles/:article_id/comments', () => {
+  test('201: posts a comment and returns it', () => {
+    const newComment = {
+      username: 'rogersop',
+      body: 'you"re a wizard harry!'
+    };
+
+    return request(app)
+      .post('/api/articles/1/comments')
+      .send(newComment)
+      .expect(201)
+      .then((response) => {
+        console.log(response);
+        
+        expect(response.body.comment).toMatchObject({
+          article_id: 1,
+          author: 'rogersop',
+          body: 'you"re a wizard harry!',
+          votes: expect.any(Number),
+          comment_id: expect.any(Number),
+          created_at: expect.any(String)
+        });
+      });
+  });
+
+  test('400: missing username/body', () => {
+    return request(app)
+      .post('/api/articles/1/comments')
+      .send({ username: 'rogersop' })
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).toBe('Bad Request');
+      });
+  });
+
+  test('404: responds with not found if article does not exist', () => {
+    return request(app)
+      .post('/api/articles/1738/comments')
+      .send({ 
+        username: 'rogersop', 
+        body: 'you"re a wizard harry!' })
+      .expect(404)
+      .then((res) => {
+        expect(res.body.msg).toBe('404 not found');
+      });
+  });
+
+  test('404: non-existent user', () => {
+    return request(app)
+      .post('/api/articles/1/comments')
+      .send({ 
+        username: 'CL4P-TP', 
+        body: 'Not Stairssss!!!!' })
+      .expect(404)
+      .then((res) => {
+        expect(res.body.msg).toBe('404 not found');
+      });
+  });
+
+  test('400: invalid article_id', () => {
+    return request(app)
+      .post('/api/articles/not-a-number/comments')
+      .send({ 
+        username: 'rogersop', 
+        body: 'you"re a wizard harry' })
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).toBe('Bad Request');
+      });
+  });
+});
+
 
