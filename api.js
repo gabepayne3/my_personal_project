@@ -6,7 +6,7 @@ const {getApi, getTopics} = require("./controllers/topics.controllers.js")
 const {postCommentByArticleId, getCommentsByArticleId, deleteComment} = require("./controllers/comments.controllers.js")
 const {getArticlesId, getArticles, patchArticleById} = require("./controllers/articles.controller.js")
 
-
+const {getUsers} = require("./controllers/users.controllers.js")
 
 app.use(express.json());
 // app.use(handlePSQLErrors)
@@ -14,6 +14,8 @@ app.use(express.json());
 // app.use(handleCustomErrors)
 //tried moving the error handling into a seperate file but ive messed up somewhere so just going to continue and come back to it 
 app.get("/api", getApi)
+
+app.get("/api/users", getUsers)
 
 app.get("/api/topics", getTopics)
 
