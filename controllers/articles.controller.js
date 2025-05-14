@@ -1,5 +1,5 @@
 const endpoints = require("../endpoints.json")
-const {selectArticlesById, selectArticles, updateArticleVotes} = require("../models/articles.models")
+const {selectArticlesById, selectArticlesWithCount, updateArticleVotes} = require("../models/articles.models")
 
 const getArticlesId = (req, res, next) => {
     const { article_id } = req.params;
@@ -12,8 +12,18 @@ const getArticlesId = (req, res, next) => {
       });
   };
 
-  const getArticles = (req, res, next) => {
-    return selectArticles()
+  const getArticlesWithCount = (req, res, next) => {
+    const { sort_by, order } = req.query;
+    console.log(sort_by)
+    let sortFinal
+    let orderFinal
+    if(sort_by === undefined){
+      sortFinal = 'created_at'
+    }else (sortFinal = sort_by)
+    if(order === undefined){
+      orderFinal = 'DESC'
+    }
+    return selectArticlesWithCount(sortFinal, orderFinal)
       .then((articles) => {
         res.status(200).send({ articles: articles });
       })
@@ -35,4 +45,19 @@ const getArticlesId = (req, res, next) => {
         })
         .catch(next);
 };
-module.exports = {getArticlesId, getArticles, patchArticleById}
+
+// const getArticlesSorted = (req, res, next) => {
+//   const { sort_by, order } = req.query;
+
+//   selectArticlesSorted(sort_by, order)
+//     .then((articles) => {
+//       res.status(200).send({ articles });
+//     })
+//     .catch((err) => {
+//       next(err);
+//     });
+// };
+
+
+
+module.exports = {getArticlesId, getArticlesWithCount, patchArticleById}

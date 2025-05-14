@@ -4,7 +4,7 @@ const app = express()
 // const {handlePSQLErrors, handleServerErrors, handleCustomErrors} = require("./errors.js")
 const {getApi, getTopics} = require("./controllers/topics.controllers.js")
 const {postCommentByArticleId, getCommentsByArticleId, deleteComment} = require("./controllers/comments.controllers.js")
-const {getArticlesId, getArticles, patchArticleById} = require("./controllers/articles.controller.js")
+const {getArticlesId, getArticlesWithCount, patchArticleById} = require("./controllers/articles.controller.js")
 
 const {getUsers} = require("./controllers/users.controllers.js")
 
@@ -21,7 +21,7 @@ app.get("/api/topics", getTopics)
 
 app.get("/api/articles/:article_id", getArticlesId);
 
-app.get("/api/articles", getArticles)
+app.get("/api/articles", getArticlesWithCount)
 
 app.get("/api/articles/:article_id/comments", getCommentsByArticleId)
 
@@ -45,3 +45,6 @@ app.use((err, req, res, next) => {
     }
   });
 module.exports = app
+
+// Pirate982Bite6125
+// postgresql://postgres:[YOUR-PASSWORD]@db.llbgifkimaobacvtczze.supabase.co:5432/postgres
