@@ -1,6 +1,9 @@
 const db = require("./db/connection.js")
 const express = require("express")
+const cors = require('cors');
+
 const app = express()
+app.use(cors());
 // const {handlePSQLErrors, handleServerErrors, handleCustomErrors} = require("./errors.js")
 const {getApi, getTopics} = require("./controllers/topics.controllers.js")
 const {postCommentByArticleId, getCommentsByArticleId, deleteComment} = require("./controllers/comments.controllers.js")
