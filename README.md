@@ -17,7 +17,6 @@ Technologies Used
     Jest (for testing)
 
     Supertest (for endpoint testing)
-    GitHub+1GitHub+1
 
 Setup Instructions
 Prerequisites
@@ -30,8 +29,7 @@ Installation
 
     Clone the repository:
 
-    git clone https://github.com/your-username/nc-news.git
-    cd nc-news
+    Then cd into the repository
 
     Install dependencies:
 
@@ -47,17 +45,12 @@ Installation
 
     Each file should contain:
 
-    PGDATABASE=your_database_name
-
-Replace your_database_name with the appropriate database name for each environment.
+    PGDATABASE=nc_news
+               nc_news_test
 
     Create databases:
 
     npm run setup-dbs
-
-    Seed the database:
-
-    npm run seed
 
     Run tests:
 
@@ -66,9 +59,6 @@ Replace your_database_name with the appropriate database name for each environme
     Start the server:
 
     npm start
-
-The server will be running on http://localhost:9090/.
-API Endpoints
 
 The API provides the following endpoints:
 
@@ -101,8 +91,6 @@ The API provides the following endpoints:
 
     GET /api/users/:username
         Returns a specific user by username.
-    Reddit+1Northcoders+1
-    GitHub
 
 Each endpoint includes comprehensive error handling and validation to ensure robust and reliable API interactions.
 Tasks Completed (Up to Task 14)
@@ -143,10 +131,7 @@ Tasks Completed (Up to Task 14)
 
         Wrote comprehensive tests for all endpoints using Jest and Supertest.
 
-        Covered both successful responses and error handling scenarios.
-
         Achieved high test coverage to ensure reliability.
-        Reddit+8Northcoders+8Northcoders+8
 
     Error Handling:
 
@@ -158,7 +143,7 @@ Tasks Completed (Up to Task 14)
 
         Followed best practices for code structure and organization.
 
-        Maintained a clean and readable codebase with appropriate comments and documentation.
+        Maintained a clean and readable codebase
 
 Future Enhancements
 
