@@ -1,53 +1,75 @@
-const db = require("./db/connection.js")
-const express = require("express")
-const cors = require('cors');
+const express = require("express");
+const app = express();
+const db = require("./db/connection");
+const endpointsJson = require("./endpoints.json");
+const cors = require("cors");
 
-const app = express()
+const {
+  getTopics,
+  getArticleById,
+  getAllArticles,
+  getCommentsByArticleId,
+  postComment,
+  patchArticleById,
+  deleteCommentById,
+  getUsers,
+  getUserByUsername,
+  patchCommentByCommentId,
+} = require("./app/controller/controller");
+
+const {
+  handle404Errors,
+  handleCustomErrors,
+  handlePsqlErrors,
+  handleServerErrors,
+} = require("./errors");
+
 app.use(cors());
-// const {handlePSQLErrors, handleServerErrors, handleCustomErrors} = require("./errors.js")
-const {getApi, getTopics} = require("./controllers/topics.controllers.js")
-const {postCommentByArticleId, getCommentsByArticleId, deleteComment} = require("./controllers/comments.controllers.js")
-const {getArticlesId, getArticlesWithCount, patchArticleById} = require("./controllers/articles.controller.js")
 
-const {getUsers} = require("./controllers/users.controllers.js")
+const apiRouter = express.Router();
+const articlesRouter = express.Router();
+const commentsRouter = express.Router();
+const topicsRouter = express.Router();
+const usersRouter = express.Router();
+
+apiRouter.get("/", (req, res) => res.status(200).send(endpointsJson));
+
+topicsRouter.route("/").get(getTopics);
+
+articlesRouter.route("/").get(getAllArticles);
+
+usersRouter.route("/:username").get(getUserByUsername);
+
+articlesRouter
+  .route("/:article_id")
+  .get(getArticleById)
+  .patch(patchArticleById);
+
+articlesRouter
+  .route("/:article_id/comments")
+  .get(getCommentsByArticleId)
+  .post(postComment);
+
+commentsRouter
+  .route("/:comment_id")
+  .delete(deleteCommentById)
+  .patch(patchCommentByCommentId);
+
+usersRouter.route("/").get(getUsers);
+apiRouter.use("/topics", topicsRouter);
+apiRouter.use("/articles", articlesRouter);
+apiRouter.use("/comments", commentsRouter);
+apiRouter.use("/users", usersRouter);
 
 app.use(express.json());
-// app.use(handlePSQLErrors)
-// app.use(handleServerErrors)
-// app.use(handleCustomErrors)
-//tried moving the error handling into a seperate file but ive messed up somewhere so just going to continue and come back to it 
-app.get("/api", getApi)
+app.use("/api", apiRouter);
 
-app.get("/api/users", getUsers)
+app.all("/*splat", handle404Errors);
+app.use(handleCustomErrors);
+app.use(handlePsqlErrors);
+app.use(handleServerErrors);
 
-app.get("/api/topics", getTopics)
-
-app.get("/api/articles/:article_id", getArticlesId);
-
-app.get("/api/articles", getArticlesWithCount)
-
-app.get("/api/articles/:article_id/comments", getCommentsByArticleId)
-
-app.post("/api/articles/:article_id/comments", postCommentByArticleId)
-
-app.patch("/api/articles/:article_id", patchArticleById)
-
-app.delete("/api/comments/:comment_id", deleteComment)
-
-app.use((err, req, res, next) => {
-
-    if (err.code === "22P02") {
-
-      res.status(400).send({ msg: "Bad Request" });
-    } else if (err.status && err.msg) {
-
-      res.status(err.status).send({ msg: err.msg });
-    } else {
-
-      res.status(500).send({ msg: "Internal Server Error" });
-    }
-  });
-module.exports = app
+module.exports = app;
 
 // Pirate982Bite6125
 // postgresql://postgres:[YOUR-PASSWORD]@db.llbgifkimaobacvtczze.supabase.co:5432/postgres

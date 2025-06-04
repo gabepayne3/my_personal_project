@@ -1,27 +1,141 @@
 {
   "GET /api": {
-    "description": "serves up a json representation of all the available endpoints of the api"
+    "description": "serves up a json representation of all the available endpoints of the api",
+    "queries": [],
+    "exampleResponse": {
+      "endpoints": {
+        "GET /api": {}
+      }
+    }
   },
   "GET /api/topics": {
     "description": "serves an array of all topics",
     "queries": [],
     "exampleResponse": {
-      "topics": [{ "slug": "football", "description": "Footie!" }]
+      "topics": [
+        {
+          "slug": "football",
+          "description": "Footie!"
+        }
+      ]
     }
   },
   "GET /api/articles": {
-    "description": "serves an array of all articles",
+    "description": "Get all articles with comment counts, sorted by date in descending order by default",
+    "queries": [
+      {
+        "name": "sort_by",
+        "description": "Column to sort by (created_at, votes, comment_count, etc.)",
+        "default": "created_at"
+      },
+      {
+        "name": "order",
+        "description": "Sort order (asc or desc)",
+        "default": "desc"
+      },
+      {
+        "name": "topic",
+        "description": "Filter by topic slug",
+        "required": false
+      }
+    ],
     "exampleResponse": {
       "articles": [
         {
-          "title": "Seafood substitutions are increasing",
-          "topic": "cooking",
-          "author": "weegembump",
-          "created_at": "2018-05-30T15:59:13.341Z",
-          "votes": 0,
-          "comment_count": 6
+          "article_id": 1,
+          "title": "Living in the shadow of a great man",
+          "topic": "mitch",
+          "author": "butter_bridge",
+          "body": "I find this existence challenging",
+          "created_at": 1594329060000,
+          "votes": 100,
+          "comment_count": 5,
+          "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
         }
       ]
+    }
+  },
+  "GET /api/articles/:article_id": {
+    "description": "Get a single article by its ID with comment count",
+    "queries": [],
+    "exampleResponse": {
+      "article": {
+        "article_id": 1,
+        "title": "Living in the shadow of a great man",
+        "topic": "mitch",
+        "author": "butter_bridge",
+        "body": "I find this existence challenging",
+        "created_at": 1594329060000,
+        "votes": 100,
+        "comment_count": 5,
+        "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
+      }
+    }
+  },
+  "POST /api/articles/:article_id/comments": {
+    "description": "Add a new comment to an article",
+    "requestBody": {
+      "username": "string (required)",
+      "body": "string (required)"
+    },
+    "exampleResponse": {
+      "comment": {
+        "comment_id": 1,
+        "body": "staffy is the best breed",
+        "article_id": 1,
+        "author": "dog_lover",
+        "votes": 0,
+        "created_at": "1625349"
+      }
+    }
+  },
+  "PATCH /api/articles/:article_id": {
+    "description": "Update the votes of an article",
+    "requestBody": {
+      "inc_votes": "integer (required)"
+    },
+    "exampleResponse": {
+      "article": {
+        "article_id": 1,
+        "title": "Living in the shadow of a great man",
+        "topic": "mitch",
+        "author": "butter_bridge",
+        "body": "I find this existence challenging",
+        "created_at": 1594329060000,
+        "votes": 101,
+        "comment_count": 5,
+        "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
+      }
+    }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "Delete a comment by its ID",
+    "parameters": {
+      "comment_id": "integer (required)"
+    },
+    "responses": {
+      "204": {
+        "description": "Comment successfully deleted (no content returned)"
+      }
+    }
+  },
+  "GET /api/users": {
+    "description": "Get all registered users",
+    "responses": {
+      "200": {
+        "description": "Array of user objects",
+        "content": {
+          "application/json": {
+            "example": [
+              {
+                "username": "butter_bridge",
+                "name": "jonny",
+                "avatar_url": "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg"
+              }
+            ]
+          }
+        }
+      }
     }
   }
 }

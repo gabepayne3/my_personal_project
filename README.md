@@ -1,16 +1,181 @@
-# NC News Seeding
+📰 NC News Backend
+Overview
 
-Run the following command to create the development and test database
+This project is part of the Northcoders Full Stack Bootcamp, focusing on building a RESTful API for a news application. The API serves as the backend for a Reddit-style platform, allowing users to interact with articles, comments, topics, and users. The project emphasizes Test-Driven Development (TDD), efficient error handling, and adherence to RESTful principles.
+GitHub+2mezzdavies.co.uk+2GitHub+2
+GitHub
+Technologies Used
 
-```
-npm run setup-dbs
-```
+    Node.js (v18.7.0)
 
-Then add two .env files at the root of the repo folder :
+    Express.js
 
-- .env.development
-- .env.test
+    PostgreSQL
 
-Inside the .development file PGDATABSE needs to equal nc_news 
+    node-postgres (pg)
 
-Inside the .test file PGDATABSE needs to equal nc_news_test
+    Jest (for testing)
+
+    Supertest (for endpoint testing)
+    GitHub+1GitHub+1
+
+Setup Instructions
+Prerequisites
+
+    Node.js (v18.7.0 or higher)
+
+    PostgreSQL (Ensure it's installed and running)
+
+Installation
+
+    Clone the repository:
+
+    git clone https://github.com/your-username/nc-news.git
+    cd nc-news
+
+    Install dependencies:
+
+    npm install
+
+    Set up environment variables:
+
+    Create two .env files in the root directory:
+
+        .env.development
+
+        .env.test
+
+    Each file should contain:
+
+    PGDATABASE=your_database_name
+
+Replace your_database_name with the appropriate database name for each environment.
+
+    Create databases:
+
+    npm run setup-dbs
+
+    Seed the database:
+
+    npm run seed
+
+    Run tests:
+
+    npm test
+
+    Start the server:
+
+    npm start
+
+The server will be running on http://localhost:9090/.
+API Endpoints
+
+The API provides the following endpoints:
+
+    GET /api
+        Serves up a JSON representation of all available endpoints.
+
+    GET /api/topics
+        Returns an array of all topics.
+
+    GET /api/articles
+        Returns an array of all articles.
+
+    GET /api/articles/:article_id
+        Returns a specific article by ID.
+
+    PATCH /api/articles/:article_id
+        Updates the votes of a specific article.
+
+    GET /api/articles/:article_id/comments
+        Returns all comments for a specific article.
+
+    POST /api/articles/:article_id/comments
+        Adds a new comment to a specific article.
+
+    DELETE /api/comments/:comment_id
+        Deletes a specific comment by ID.
+
+    GET /api/users
+        Returns an array of all users.
+
+    GET /api/users/:username
+        Returns a specific user by username.
+    Reddit+1Northcoders+1
+    GitHub
+
+Each endpoint includes comprehensive error handling and validation to ensure robust and reliable API interactions.
+Tasks Completed (Up to Task 14)
+
+    Project Setup:
+
+        Initialized the project with npm init.
+
+        Installed necessary dependencies: express, pg, dotenv, jest, supertest.
+
+        Configured environment variables for development and testing environments.
+
+    Database Configuration:
+
+        Set up PostgreSQL databases for development and testing.
+
+        Created tables for topics, articles, users, and comments.
+
+        Established relationships between tables using foreign keys.
+        GitHub
+        GitHub
+
+    Seeding the Database:
+
+        Developed seed scripts to populate the database with test data.
+
+        Ensured data integrity and consistency across related tables.
+
+    API Development:
+
+        Built RESTful endpoints for all required routes.
+
+        Implemented controllers and models to handle business logic and database interactions.
+
+        Ensured endpoints return appropriate HTTP status codes and messages.
+
+    Testing:
+
+        Wrote comprehensive tests for all endpoints using Jest and Supertest.
+
+        Covered both successful responses and error handling scenarios.
+
+        Achieved high test coverage to ensure reliability.
+        Reddit+8Northcoders+8Northcoders+8
+
+    Error Handling:
+
+        Implemented middleware to handle custom errors and unexpected issues.
+
+        Ensured consistent error responses across all endpoints.
+
+    Code Quality:
+
+        Followed best practices for code structure and organization.
+
+        Maintained a clean and readable codebase with appropriate comments and documentation.
+
+Future Enhancements
+
+    Pagination and Filtering:
+
+        Implement pagination for endpoints returning large datasets.
+
+        Add filtering options for articles based on topics, authors, and dates.
+
+    User Authentication:
+
+        Integrate user authentication and authorization mechanisms.
+
+        Restrict certain actions (e.g., posting comments) to authenticated users.
+
+    Deployment:
+
+        Deploy the API to a cloud platform (e.g., Heroku, Vercel) for public access.
+
+        Set up continuous integration and deployment pipelines.
