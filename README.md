@@ -110,8 +110,6 @@ Tasks Completed (Up to Task 14)
         Created tables for topics, articles, users, and comments.
 
         Established relationships between tables using foreign keys.
-        GitHub
-        GitHub
 
     Seeding the Database:
 
@@ -145,22 +143,3 @@ Tasks Completed (Up to Task 14)
 
         Maintained a clean and readable codebase
 
-Future Enhancements
-
-    Pagination and Filtering:
-
-        Implement pagination for endpoints returning large datasets.
-
-        Add filtering options for articles based on topics, authors, and dates.
-
-    User Authentication:
-
-        Integrate user authentication and authorization mechanisms.
-
-        Restrict certain actions (e.g., posting comments) to authenticated users.
-
-    Deployment:
-
-        Deploy the API to a cloud platform (e.g., Heroku, Vercel) for public access.
-
-        Set up continuous integration and deployment pipelines.
