@@ -3,7 +3,7 @@ const app = express();
 const db = require("./db/connection");
 const endpointsJson = require("./endpoints.json");
 const cors = require("cors");
-
+app.use(cors());
 const {
   getTopics,
   getArticleById,
@@ -24,7 +24,6 @@ const {
   handleServerErrors,
 } = require("./errors");
 
-app.use(cors());
 
 const apiRouter = express.Router();
 const articlesRouter = express.Router();
