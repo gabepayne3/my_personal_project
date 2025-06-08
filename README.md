@@ -1,4 +1,4 @@
-📰 NC News Backend
+📰 NC News Backend (https://my-personal-project-nh77.onrender.com/api <<<< please find my hosted API)
 Overview
 
 This project is part of the Northcoders Full Stack Bootcamp, focusing on building a RESTful API for a news application. The API serves as the backend for a Reddit-style platform, allowing users to interact with articles, comments, topics, and users. The project emphasizes Test-Driven Development (TDD), efficient error handling, and adherence to RESTful principles.
